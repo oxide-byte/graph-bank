@@ -1,0 +1,12 @@
+[package]
+name = "graph-customer"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+axum = { workspace = true }
+axum-tracing-opentelemetry = { workspace = true }
+tokio = { workspace = true }
+
+tools-server = { path = "../tools-server" }

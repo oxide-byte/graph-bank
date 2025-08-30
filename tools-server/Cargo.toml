@@ -1,0 +1,18 @@
+[package]
+name = "tools-server"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+axum = { workspace = true }
+tokio = { workspace = true }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+tracing-loki = { workspace = true }
+opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true, features = ["metrics", "rt-tokio"] }
+opentelemetry-prometheus = { workspace = true }
+prometheus = { workspace = true }
+sysinfo = { workspace = true, default-features = false, features = ["system"] }
