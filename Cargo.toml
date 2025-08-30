@@ -21,7 +21,8 @@ prometheus = "0.14.0"
 sysinfo = { version = "0.37.0", default-features = false, features = ["system"] }
 
 # GraphQL
-
+async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "graphiql"] }
+async-graphql-axum = { version = "7.0.17", default-features = false }
 
 # Tools
 tokio = { version = "1.47.1", features = ["full"] }

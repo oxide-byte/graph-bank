@@ -1,7 +1,7 @@
 services:
-  rust-observability:
+  graph-customer:
     build: .
-    container_name: rust-observability
+    container_name: graph-customer
     ports:
       - "8080:8080"
     environment:
@@ -47,7 +47,7 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--log.level=debug'
     depends_on:
-      - rust-observability
+      - graph-customer
       - promtail
       - loki
     networks:

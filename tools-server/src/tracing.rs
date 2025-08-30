@@ -1,3 +1,4 @@
+use std::borrow::Cow;
 use std::process;
 use tracing::Event;
 use tracing_loki::url::Url;
@@ -9,12 +10,12 @@ use tracing_subscriber::{fmt, prelude::*, registry::LookupSpan, EnvFilter};
 
 struct AppIdWrapper<F> {
     inner: F,
-    app: &'static str,
+    app: Cow<'static, str>,
 }
 
 impl<F> AppIdWrapper<F> {
-    const fn new(inner: F, app: &'static str) -> Self {
-        Self { inner, app }
+    fn new(inner: F, app: impl Into<Cow<'static, str>>) -> Self {
+        Self { inner, app: app.into() }
     }
 }
 
@@ -37,7 +38,7 @@ where
     }
 }
 
-pub fn init_tracing_logging() {
+pub fn init_tracing_logging(loki_server: &str, service_name: &str) {
     // Respect RUST_LOG, default to info if not set
     let env_filter = EnvFilter::try_from_default_env()
         .or_else(|_| EnvFilter::try_new("info"))
@@ -45,14 +46,12 @@ pub fn init_tracing_logging() {
 
     // Build a compact default formatter and wrap it to inject the app tag
     let default_format = fmt::format().compact();
-    let app_format = AppIdWrapper::new(default_format, "rust-observability");
+    let app_format = AppIdWrapper::new(default_format, service_name.to_string());
 
     let (loki_layer, task) = tracing_loki::builder()
-        .label("host", "rust-observability-host")
-        .unwrap()
-        .extra_field("pid", format!("{}", process::id()))
-        .unwrap()
-        .build_url(Url::parse("http://loki:3100").unwrap())
+        .label("service", service_name).unwrap()
+        .extra_field("pid", format!("{}", process::id())).unwrap()
+        .build_url(Url::parse(loki_server).unwrap())
         .unwrap();
 
     let fmt_layer = fmt::layer()
