@@ -12,6 +12,7 @@ RUN cargo build --release || true
 # Now copy real sources
 COPY tools-server ./tools-server
 COPY graph-customer ./graph-customer
+COPY graph-deposit ./graph-deposit
 
 # Build the actual binary
 RUN cargo build --release
@@ -26,7 +27,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
 RUN useradd -m -u 10001 appuser
 
 # Copy the compiled binary
-COPY --from=builder /app/target/release/graph-customer /usr/local/bin/app
+COPY --from=builder /app/target/release/graph-deposit /usr/local/bin/app
 
 EXPOSE 8080
 USER appuser

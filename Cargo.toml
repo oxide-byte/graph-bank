@@ -3,7 +3,8 @@ resolver = "2"
 [workspace]
 members = [
     "tools-server",
-    "graph-customer"
+    "graph-customer",
+    "graph-deposit"
 ]
 
 [workspace.dependencies]

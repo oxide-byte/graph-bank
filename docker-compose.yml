@@ -1,9 +1,22 @@
 services:
   graph-customer:
-    build: .
+    build:
+      dockerfile: Dockerfile-Customer
     container_name: graph-customer
     ports:
       - "8080:8080"
+    environment:
+      - RUST_OBSERVABILITY_VMS=1
+      - RUST_LOG=info
+    networks:
+      - monitoring
+
+  graph-deposit:
+    build:
+      dockerfile: Dockerfile-Deposit
+    container_name: graph-deposit
+    ports:
+      - "8081:8080"
     environment:
       - RUST_OBSERVABILITY_VMS=1
       - RUST_LOG=info

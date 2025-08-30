@@ -1,0 +1,15 @@
+[package]
+name = "graph-deposit"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+axum = { workspace = true }
+axum-tracing-opentelemetry = { workspace = true }
+async-graphql = { workspace = true, default-features = false, features = ["tracing", "graphiql"] }
+async-graphql-axum = { workspace = true, default-features = false }
+
+tokio = { workspace = true }
+
+tools-server = { path = "../tools-server" }
