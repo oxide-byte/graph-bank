@@ -23,7 +23,7 @@ sysinfo = { version = "0.37.0", default-features = false, features = ["system"] 
 config = "0.15.15"
 
 # GraphQL
-async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "graphiql"] }
+async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "graphiql", "playground"] }
 async-graphql-axum = { version = "7.0.17", default-features = false }
 
 # Tools
