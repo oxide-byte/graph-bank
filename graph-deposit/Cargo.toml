@@ -9,7 +9,10 @@ axum = { workspace = true }
 axum-tracing-opentelemetry = { workspace = true }
 async-graphql = { workspace = true, default-features = false, features = ["tracing", "graphiql"] }
 async-graphql-axum = { workspace = true, default-features = false }
+config = {workspace = true }
 
 tokio = { workspace = true }
 
+serde = { workspace = true }
+serde_derive = { workspace = true }
 tools-server = { path = "../tools-server" }

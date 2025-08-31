@@ -10,11 +10,13 @@ use tools_server::observability::{http_metrics_middleware, setup_observability};
 use tools_server::tracing::init_tracing_logging;
 use tools_server::routes::default_routes;
 use crate::config::graph_config::graph_routes;
+use crate::config::settings::Settings;
 
 #[tokio::main]
 async fn main() {
+    let settings = Settings::new().unwrap();
     // Initialize structured logging for tracing (logs are NOT sent to Prometheus; they go to stdout)
-    init_tracing_logging("http://loki:3100", "graph-deposit");
+    init_tracing_logging(settings.loki.url.as_str(), "graph-deposit");
     setup_observability();
 
     let app = Router::new()

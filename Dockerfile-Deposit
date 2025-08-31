@@ -28,6 +28,8 @@ RUN useradd -m -u 10001 appuser
 
 # Copy the compiled binary
 COPY --from=builder /app/target/release/graph-deposit /usr/local/bin/app
+COPY --from=builder /app/graph-deposit/config/default.toml /usr/local/bin/default.toml
+COPY --from=builder /app/graph-deposit/config/docker.toml /usr/local/bin/docker.toml
 
 EXPOSE 8080
 USER appuser
