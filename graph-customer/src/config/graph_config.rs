@@ -1,6 +1,6 @@
 use crate::domain::customer::{CreateCustomer, Customer};
 use crate::receiver::customer_receiver::get_customer;
-use async_graphql::http::{playground_source, GraphiQLSource, GraphQLPlaygroundConfig};
+use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, GraphiQLSource};
 use async_graphql::{EmptySubscription, Object, ID};
 use async_graphql_axum::{GraphQL, GraphQLRequest, GraphQLResponse};
 use axum::response::IntoResponse;
@@ -17,13 +17,10 @@ struct Query;
 
 #[Object]
 impl Query {
-    // TODO: Fill in query AND entity resolvers
-    /// This will show up in the supergraph schema as part of Query.
     async fn customer(&self, id: ID) -> Option<Customer> {
         get_customer(id)
     }
 
-    /// This will be available to other subgraphs as an entity.
     #[graphql(entity)]
     async fn customer_entity_by_id(&self, id: ID) -> Option<Customer> {
         get_customer(id)
@@ -34,10 +31,9 @@ struct Mutation;
 
 #[Object]
 impl Mutation {
-
     async fn create_customer(&self, customer: CreateCustomer) -> Customer {
         let CreateCustomer { id, name } = customer;
-        Customer { id, name }
+        Customer { id, name, deposit: None }
     }
 }
 
@@ -51,6 +47,7 @@ async fn playground() -> impl IntoResponse {
 
 pub fn graph_routes() -> Router {
     let schema = Schema::build(Query, Mutation, EmptySubscription)
+        .enable_federation()
         .finish();
 
     Router::new()

@@ -9,7 +9,7 @@ axum = { workspace = true }
 axum-tracing-opentelemetry = { workspace = true }
 async-graphql = { workspace = true, default-features = false, features = ["tracing", "graphiql", "playground"] }
 async-graphql-axum = { workspace = true, default-features = false }
-config = {workspace = true }
+config = { workspace = true }
 
 tokio = { workspace = true }
 

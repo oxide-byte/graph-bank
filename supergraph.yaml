@@ -1,0 +1,10 @@
+federation_version: =2.9.3
+subgraphs:
+
+  customer:
+    schema:
+      subgraph_url: http://127.0.0.1:8080
+
+  deposit:
+    schema:
+      subgraph_url: http://127.0.0.1:8081

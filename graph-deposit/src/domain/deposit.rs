@@ -1,6 +1,7 @@
 use async_graphql::{InputObject, SimpleObject, ID};
 
 #[derive(SimpleObject)]
+#[graphql(shareable)]
 pub struct Deposit {
     pub id: ID,
     pub name: String,

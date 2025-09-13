@@ -3,14 +3,14 @@ mod domain;
 mod receiver;
 mod config;
 
+use crate::config::graph_config::graph_routes;
+use crate::config::settings::Settings;
 use axum::Router;
 use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer};
 use tools_server::graceful_shutdown::graceful_shutdown;
 use tools_server::observability::{http_metrics_middleware, setup_observability};
-use tools_server::tracing::init_tracing_logging;
 use tools_server::routes::default_routes;
-use crate::config::graph_config::graph_routes;
-use crate::config::settings::Settings;
+use tools_server::tracing::init_tracing_logging;
 
 #[tokio::main]
 async fn main() {
@@ -26,7 +26,7 @@ async fn main() {
         .merge(graph_routes())
         .layer(axum::middleware::from_fn(http_metrics_middleware));
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:8080").await.unwrap();
+    let listener = tokio::net::TcpListener::bind("0.0.0.0:8081").await.unwrap();
 
     println!(
         "Metrics server listening on {}",

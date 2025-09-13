@@ -17,15 +17,12 @@ struct Query;
 
 #[Object]
 impl Query {
-    // TODO: Fill in query AND entity resolvers
-    /// This will show up in the supergraph schema as part of Query.
-    async fn customer(&self, id: ID) -> Option<Deposit> {
+    async fn deposit(&self, id: ID) -> Option<Deposit> {
         get_deposit(id)
     }
 
-    /// This will be available to other subgraphs as an entity.
     #[graphql(entity)]
-    async fn customer_entity_by_id(&self, id: ID) -> Option<Deposit> {
+    async fn deposit_entity_by_id(&self, id: ID) -> Option<Deposit> {
         get_deposit(id)
     }
 }
@@ -34,9 +31,8 @@ struct Mutation;
 
 #[Object]
 impl Mutation {
-
-    async fn create_customer(&self, customer: CreateDeposit) -> Deposit {
-        let CreateDeposit { id, name } = customer;
+    async fn create_deposit(&self, deposit: CreateDeposit) -> Deposit {
+        let CreateDeposit { id, name } = deposit;
         Deposit { id, name }
     }
 }
@@ -51,6 +47,7 @@ async fn playground() -> impl IntoResponse {
 
 pub fn graph_routes() -> Router {
     let schema = Schema::build(Query, Mutation, EmptySubscription)
+        .enable_federation()
         .finish();
 
     Router::new()
