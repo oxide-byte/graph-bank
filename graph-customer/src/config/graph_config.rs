@@ -33,7 +33,7 @@ struct Mutation;
 impl Mutation {
     async fn create_customer(&self, customer: CreateCustomer) -> Customer {
         let CreateCustomer { id, name } = customer;
-        Customer { id, name, deposit: None }
+        Customer { id, name }
     }
 }
 

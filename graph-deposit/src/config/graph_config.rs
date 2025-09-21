@@ -1,4 +1,4 @@
-use crate::domain::deposit::{CreateDeposit, Deposit};
+use crate::domain::deposit::{CreateDeposit, Deposit, Customer};
 use crate::receiver::deposit_receiver::get_deposit;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, GraphiQLSource};
 use async_graphql::{EmptySubscription, Object, ID};
@@ -17,13 +17,9 @@ struct Query;
 
 #[Object]
 impl Query {
-    async fn deposit(&self, id: ID) -> Option<Deposit> {
-        get_deposit(id)
-    }
-
     #[graphql(entity)]
-    async fn deposit_entity_by_id(&self, id: ID) -> Option<Deposit> {
-        get_deposit(id)
+    async fn find_customer_by_id(&self, id: ID) -> Customer {
+        Customer { id }
     }
 }
 

@@ -34,6 +34,15 @@ rover dev --url http://localhost:8081 --name graph-deposit
 
 http://localhost:3000
 
+Prometheus:
+
+    http://127.0.0.1:9090/
+
+Grafana:
+
+    http://127.0.0.1:3000/
+
+
 ## Alternative
 
 An alternative to https://www.apollographql.com/ can be found under:

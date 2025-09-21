@@ -1,0 +1,6 @@
+POST http://127.0.0.1:4000/
+Content-Type: application/json
+
+{"query":"{ customer(id: \"1\") {id name deposit { id name }}}"}
+
+###
