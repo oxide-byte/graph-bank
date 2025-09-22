@@ -1,6 +1,4 @@
-# curl -X POST http://127.0.0.1:8081/
-#-H 'content-type: application/json'
-#--data '{"query":"{ _service { sdl } }"}'
+### Getting SCHEMA
 POST http://127.0.0.1:8081/
 Content-Type: application/json
 

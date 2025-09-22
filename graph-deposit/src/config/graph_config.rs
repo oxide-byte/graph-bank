@@ -1,5 +1,6 @@
-use crate::domain::deposit::{CreateDeposit, Deposit, Customer};
+use crate::domain::deposit::{CreateDeposit, Customer, Deposit};
 use crate::receiver::deposit_receiver::get_deposit;
+use async_graphql::extensions::Tracing;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, GraphiQLSource};
 use async_graphql::{EmptySubscription, Object, ID};
 use async_graphql_axum::{GraphQL, GraphQLRequest, GraphQLResponse};
@@ -17,6 +18,10 @@ struct Query;
 
 #[Object]
 impl Query {
+    async fn deposit(&self, id: ID) -> Option<Deposit> {
+        get_deposit(id)
+    }
+
     #[graphql(entity)]
     async fn find_customer_by_id(&self, id: ID) -> Customer {
         Customer { id }
@@ -44,6 +49,7 @@ async fn playground() -> impl IntoResponse {
 pub fn graph_routes() -> Router {
     let schema = Schema::build(Query, Mutation, EmptySubscription)
         .enable_federation()
+        .extension(Tracing)
         .finish();
 
     Router::new()

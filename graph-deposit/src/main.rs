@@ -10,6 +10,7 @@ use axum_tracing_opentelemetry::middleware::{OtelAxumLayer, OtelInResponseLayer}
 use tools_server::graceful_shutdown::graceful_shutdown;
 use tools_server::observability::{http_metrics_middleware, setup_observability};
 use tools_server::routes::default_routes;
+use tools_server::trace_span_layer::TraceSpanLayer;
 use tools_server::tracing::init_tracing_logging;
 
 #[tokio::main]
@@ -24,7 +25,8 @@ async fn main() {
         .merge(default_routes())
         .layer(OtelAxumLayer::default()) // Contains Spawn: "_spans":["api_demo_handler"]
         .merge(graph_routes())
-        .layer(axum::middleware::from_fn(http_metrics_middleware));
+        .layer(axum::middleware::from_fn(http_metrics_middleware))
+        .layer(TraceSpanLayer::default());
 
     let listener = tokio::net::TcpListener::bind("0.0.0.0:8081").await.unwrap();
 

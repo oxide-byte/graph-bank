@@ -1,4 +1,5 @@
 use async_graphql::{InputObject, Object, SimpleObject, ID};
+use tracing::info;
 
 pub struct Customer {
     pub id: ID,
@@ -11,11 +12,15 @@ impl Customer {
         &self.id
     }
 
-    async fn deposit(&self) -> Deposit {
-        println!("Retrieve Sub Deposit");
-        Deposit {
-            id: self.id.clone(),
-            name: String::from("Name_sub"),
+    async fn deposit(&self) -> Option<Deposit> {
+        info!("Getting deposit for customer: {:?}", self.id);
+        if self.id == "CUSTOMER_1" {
+            Some(Deposit {
+                id: ID::from("DEPOSIT_1"),
+                name: String::from("Deposit for Customer 1"),
+            })
+        } else {
+            None
         }
     }
 }

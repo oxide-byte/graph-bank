@@ -7,9 +7,13 @@ license = "MIT"
 [dependencies]
 axum = { workspace = true }
 axum-tracing-opentelemetry = { workspace = true }
-async-graphql = { workspace = true, default-features = false, features = ["tracing", "graphiql", "playground"] }
+async-graphql = { workspace = true, default-features = false, features = ["tracing", "opentelemetry", "graphiql", "playground"] }
 async-graphql-axum = { workspace = true, default-features = false }
 config = { workspace = true }
+
+opentelemetry = { workspace = true }
+tracing = { workspace = true }
+tracing-loki  = { workspace = true }
 
 tokio = { workspace = true }
 

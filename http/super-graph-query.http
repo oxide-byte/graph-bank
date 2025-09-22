@@ -1,6 +1,23 @@
+### CUSTOMER with DEPOT
+
 POST http://127.0.0.1:4000/
 Content-Type: application/json
+trace-id: 1
 
-{"query":"{ customer(id: \"1\") {id name deposit { id name }}}"}
+{"query":"{ customer(id: \"CUSTOMER_1\") {id name deposit { id name }}}"}
 
-###
+### CUSTOMER WITHOUT DEPOT
+
+POST http://127.0.0.1:4000/
+Content-Type: application/json
+trace-id: 1
+
+{"query":"{ customer(id: \"CUSTOMER_2\") {id name deposit { id name }}}"}
+
+### NO CUSTOMER
+
+POST http://127.0.0.1:4000/
+Content-Type: application/json
+trace-id: 1
+
+{"query":"{ customer(id: \"CUSTOMER_3\") {id name deposit { id name }}}"}

@@ -16,3 +16,4 @@ opentelemetry_sdk = { workspace = true, features = ["metrics", "rt-tokio"] }
 opentelemetry-prometheus = { workspace = true }
 prometheus = { workspace = true }
 sysinfo = { workspace = true, default-features = false, features = ["system"] }
+tower = { workspace = true }

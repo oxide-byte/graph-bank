@@ -21,9 +21,10 @@ opentelemetry-prometheus = "0.29.1"
 prometheus = "0.14.0"
 sysinfo = { version = "0.37.0", default-features = false, features = ["system"] }
 config = "0.15.15"
+tower = "0.5"
 
 # GraphQL
-async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "graphiql", "playground"] }
+async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "opentelemetry", "graphiql", "playground", "log"] }
 async-graphql-axum = { version = "7.0.17", default-features = false }
 
 # Tools

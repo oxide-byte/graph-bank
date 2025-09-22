@@ -1,5 +1,6 @@
 use crate::domain::customer::{CreateCustomer, Customer};
 use crate::receiver::customer_receiver::get_customer;
+use async_graphql::extensions::Tracing;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, GraphiQLSource};
 use async_graphql::{EmptySubscription, Object, ID};
 use async_graphql_axum::{GraphQL, GraphQLRequest, GraphQLResponse};
@@ -48,6 +49,7 @@ async fn playground() -> impl IntoResponse {
 pub fn graph_routes() -> Router {
     let schema = Schema::build(Query, Mutation, EmptySubscription)
         .enable_federation()
+        .extension(Tracing)
         .finish();
 
     Router::new()
