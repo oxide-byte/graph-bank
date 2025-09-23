@@ -20,8 +20,8 @@ opentelemetry_sdk = { version = "0.29.0", features = ["metrics", "rt-tokio"] }
 opentelemetry-prometheus = "0.29.1"
 prometheus = "0.14.0"
 sysinfo = { version = "0.37.0", default-features = false, features = ["system"] }
-config = "0.15.15"
-tower = "0.5"
+config = "0.15.16"
+tower = "0.5.2"
 
 # GraphQL
 async-graphql = { version = "7.0.17", default-features = false, features = ["tracing", "opentelemetry", "graphiql", "playground", "log"] }
@@ -29,6 +29,6 @@ async-graphql-axum = { version = "7.0.17", default-features = false }
 
 # Tools
 tokio = { version = "1.47.1", features = ["full"] }
-serde = { version = "1.0.219" }
-serde_json = { version = "1.0.143" }
-serde_derive = { version = "1.0.219" }
+serde = { version = "1.0.226" }
+serde_json = { version = "1.0.145" }
+serde_derive = { version = "1.0.226" }

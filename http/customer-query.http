@@ -4,4 +4,10 @@ Content-Type: application/json
 
 {"query":"{ _service { sdl } }"}
 
+### Getting Customer
+POST http://127.0.0.1:8080/
+Content-Type: application/json
+
+{"query":"{ customer(id: \"CUSTOMER_1\") {id name }} "}
+
 ###

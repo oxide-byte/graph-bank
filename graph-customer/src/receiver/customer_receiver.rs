@@ -7,12 +7,12 @@ pub fn get_customer(id: ID) -> Option<Customer> {
     if id == "CUSTOMER_1" {
         Some(Customer {
             id,
-            name: String::from("Customer Name 1 WITH Depot")
+            name: String::from("Customer Name 1 WITH Deposit")
         })
     } else if id == "CUSTOMER_2" {
         Some(Customer {
             id,
-            name: String::from("Customer Name 2 NO Depot")
+            name: String::from("Customer Name 2 NO Deposit")
         })
     } else {
         None

@@ -3,16 +3,12 @@ use crate::receiver::deposit_receiver::get_deposit;
 use async_graphql::extensions::Tracing;
 use async_graphql::http::{playground_source, GraphQLPlaygroundConfig, GraphiQLSource};
 use async_graphql::{EmptySubscription, Object, ID};
-use async_graphql_axum::{GraphQL, GraphQLRequest, GraphQLResponse};
+use async_graphql_axum::GraphQL;
 use axum::response::IntoResponse;
 use axum::routing::{get, post_service};
-use axum::{response, Extension, Router};
+use axum::{response, Router};
 
 type Schema = async_graphql::Schema<Query, Mutation, EmptySubscription>;
-
-async fn graphql_handler(schema: Extension<Schema>, req: GraphQLRequest) -> GraphQLResponse {
-    schema.execute(req.into_inner()).await.into()
-}
 
 struct Query;
 

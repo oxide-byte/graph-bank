@@ -4,4 +4,10 @@ Content-Type: application/json
 
 {"query":"{ _service { sdl } }"}
 
+### Getting Deposit
+POST http://127.0.0.1:8081/
+Content-Type: application/json
+
+{"query":"{ deposit(id: \"DEPOSIT_1\") { id name }}"}
+
 ###
