@@ -2,20 +2,12 @@ global:
   scrape_interval: 5s
 
 scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: [ 'localhost:9090' ]
-
-  - job_name: 'rust-observability'
+  - job_name: 'graph-customer'
     metrics_path: /metrics
     static_configs:
-      - targets: [ 'rust-observability:8080' ]
+      - targets: [ 'graph-customer:8080' ]
 
-  - job_name: 'promtail'
-    static_configs:
-      - targets: [ 'promtail:9080' ]
-
-  - job_name: 'loki'
-    static_configs:
-      - targets: [ 'loki:3100' ]
+  - job_name: 'graph-deposit'
     metrics_path: /metrics
+    static_configs:
+      - targets: [ 'graph-deposit:8081' ]

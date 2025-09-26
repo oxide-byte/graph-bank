@@ -15,10 +15,11 @@ use tools_server::tracing::init_tracing_logging;
 
 #[tokio::main]
 async fn main() {
+    let service = "graph_deposit";
     let settings = Settings::new().unwrap();
     // Initialize structured logging for tracing (logs are NOT sent to Prometheus; they go to stdout)
     init_tracing_logging(settings.loki.url.as_str(), "graph-deposit");
-    setup_observability();
+    setup_observability(service);
 
     let app = Router::new()
         .layer(OtelInResponseLayer::default()) // Contains no Spawn:

@@ -18,10 +18,10 @@ static OTEL_REGISTRY: OnceLock<Registry> = OnceLock::new();
 static HTTP_REQ_COUNTER: OnceLock<opentelemetry::metrics::Counter<u64>> = OnceLock::new();
 static HTTP_REQ_HIST_MS: OnceLock<opentelemetry::metrics::Histogram<f64>> = OnceLock::new();
 
-pub fn setup_observability() {
+pub fn setup_observability(service: &'static str) {
     // Initialize OpenTelemetry metrics with Prometheus exporter (standard metrics)
-    setup_otel_metrics();
-    init_http_instruments();
+    setup_otel_metrics(service.parse().unwrap());
+    init_http_instruments(service);
 
     let registry = PROCESS_REGISTRY.get_or_init(Registry::new);
 
@@ -30,7 +30,7 @@ pub fn setup_observability() {
             "process_cpu_usage",
             "Process CPU usage percentage (can exceed 100% on multi-core)",
         )
-            .namespace("rust_observability"),
+            .namespace(service),
     )
         .expect("create cpu gauge");
 
@@ -39,7 +39,7 @@ pub fn setup_observability() {
             "process_memory_rss_bytes",
             "Process resident set size (RSS) in bytes",
         )
-            .namespace("rust_observability"),
+            .namespace(service),
     )
         .expect("create rss gauge");
 
@@ -67,7 +67,7 @@ pub fn setup_observability() {
                 "process_memory_virtual_bytes",
                 "Process virtual memory size (address space) in bytes; note: not resident RAM. On macOS this can be tens of GB due to reserved spaces.",
             )
-                .namespace("rust_observability"),
+                .namespace(service),
         )
             .expect("create vms gauge");
         registry
@@ -147,12 +147,13 @@ pub fn setup_observability() {
     });
 }
 
-fn setup_otel_metrics() {
+fn setup_otel_metrics(service: String) {
     // Ensure we only set up once
     let registry = OTEL_REGISTRY.get_or_init(Registry::new).clone();
 
     // Build Prometheus exporter backed by our registry
     let exporter: PrometheusExporter = opentelemetry_prometheus::exporter()
+        .with_namespace(service)
         .with_registry(registry.clone())
         .build()
         .expect("build otel prometheus exporter");
@@ -163,8 +164,9 @@ fn setup_otel_metrics() {
     global::set_meter_provider(provider);
 }
 
-fn init_http_instruments() {
-    let meter = global::meter("rust_observability.http");
+fn init_http_instruments(service: &'static str) {
+
+    let meter = global::meter(service);
     let counter = meter
         .u64_counter("http_server_requests_total")
         .with_description("Total number of HTTP requests handled")
@@ -185,6 +187,11 @@ pub async fn http_metrics_middleware(
     let method = req.method().as_str().to_owned();
     // Using raw path; matched route templates aren't available at this layer without extra setup
     let path = req.uri().path().to_owned();
+    let trace_id = req.headers().get("trace_id")
+        .or_else(|| req.headers().get("correlation_id"))
+        .and_then(|v| v.to_str().ok())
+        .map(|s| s.to_string())
+        .unwrap_or_else(|| "NONE".to_string());
     let res = next.run(req).await;
     let status = res.status().as_u16();
 
@@ -195,6 +202,7 @@ pub async fn http_metrics_middleware(
                 KeyValue::new("method", method.clone()),
                 KeyValue::new("path", path.clone()),
                 KeyValue::new("status", status.to_string()),
+                KeyValue::new("trace-id", trace_id.to_string()),
             ],
         );
     }
@@ -206,6 +214,7 @@ pub async fn http_metrics_middleware(
                 KeyValue::new("method", method),
                 KeyValue::new("path", path),
                 KeyValue::new("status", status.to_string()),
+                KeyValue::new("trace-id", trace_id.to_string()),
             ],
         );
     }
