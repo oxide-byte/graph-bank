@@ -65,7 +65,7 @@ The RoverCLI managed router is not included in docker-compose because it require
 Starting SuperGraph with RoverCLI:
 
 ```shell
-rover dev --supergraph-config supergraph.yaml
+rover dev --supergraph-config supergraph.yaml --router-config router-config-dev.yaml
 ```
 
 Note: rover dev is intended for local development only and is not production-ready. A production deployment strategy should be evaluated case by case.
@@ -92,7 +92,7 @@ When docker-compose and the RoverCLI are running, your environment exposes the f
 
 2. Start the supergraph router (in a separate terminal):
    
-   rover dev --supergraph-config supergraph.yaml
+   rover dev --supergraph-config supergraph.yaml --router-config router-config-dev.yaml
 
 3. Run sample queries:
    

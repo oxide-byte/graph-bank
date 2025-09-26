@@ -2,6 +2,7 @@
 
 POST http://127.0.0.1:4000/
 Content-Type: application/json
+correlation_id: {{$uuid}}
 
 {"query":"{ customer(id: \"CUSTOMER_1\") {id name deposit { id name }}}"}
 
@@ -9,6 +10,7 @@ Content-Type: application/json
 
 POST http://127.0.0.1:4000/
 Content-Type: application/json
+correlation_id: {{$uuid}}
 
 {"query":"{ customer(id: \"CUSTOMER_2\") {id name deposit { id name }}}"}
 
@@ -16,5 +18,6 @@ Content-Type: application/json
 
 POST http://127.0.0.1:4000/
 Content-Type: application/json
+correlation_id: {{$uuid}}
 
 {"query":"{ customer(id: \"CUSTOMER_3\") {id name deposit { id name }}}"}

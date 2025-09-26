@@ -39,7 +39,7 @@ where
     }
 
     fn call(&mut self, req: Request<ReqBody>) -> Self::Future {
-        let trace_id = extract_apollo_trace_id(req.headers());
+        let trace_id = extract_trace_id(req.headers());
         let fut = self.inner.call(req);
 
         Box::pin(async move {
@@ -51,11 +51,10 @@ where
     }
 }
 
-fn extract_apollo_trace_id(headers: &HeaderMap) -> String {
+fn extract_trace_id(headers: &HeaderMap) -> String {
     headers
-        .get("APOLLO_TRACE_ID")
-        .or_else(|| headers.get("apollo-trace-id"))
-        .or_else(|| headers.get("trace_id"))
+        .get("trace_id")
+        .or_else(|| headers.get("correlation_id"))
         .and_then(|v| v.to_str().ok())
         .map(|s| s.to_string())
         .unwrap_or_else(|| "NONE".to_string())

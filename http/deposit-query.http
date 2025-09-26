@@ -1,12 +1,14 @@
 ### Getting SCHEMA
 POST http://127.0.0.1:8081/
 Content-Type: application/json
+correlation_id: {{$uuid}}
 
 {"query":"{ _service { sdl } }"}
 
 ### Getting Deposit
 POST http://127.0.0.1:8081/
 Content-Type: application/json
+correlation_id: {{$uuid}}
 
 {"query":"{ deposit(id: \"DEPOSIT_1\") { id name }}"}
 

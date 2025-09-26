@@ -1,0 +1,14 @@
+supergraph:
+  listen: 127.0.0.1:4000
+
+# https://www.apollographql.com/docs/graphos/routing/observability/router-telemetry-otel/enabling-telemetry/spans#speccompliant
+telemetry:
+  instrumentation:
+    spans:
+      mode: spec_compliant
+
+headers:
+  all:
+    request:
+      - propagate:
+          matching: .*
