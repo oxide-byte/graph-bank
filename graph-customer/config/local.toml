@@ -1,2 +1,5 @@
 [loki]
 url = "http://127.0.0.1:3100"
+
+[tempo]
+url = "http://127.0.0.1:4318/v1/traces"

@@ -9,3 +9,10 @@ datasources:
     basicAuth: false
     isDefault: false
     editable: true
+    jsonData:
+      derivedFields:
+        - name: trace_id
+          matcherType: regex
+          matcherRegex: '"trace_id"\s*:\s*"([^"]+)"'
+          datasourceUid: TEMPO_DS
+          url: '$${__value.raw}'

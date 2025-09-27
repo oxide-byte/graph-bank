@@ -1,2 +1,5 @@
 [loki]
 url = "http://loki:3100"
+
+[tempo]
+url = "http://tempo:4318/v1/traces"

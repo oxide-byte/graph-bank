@@ -31,20 +31,16 @@ where
         mut writer: Writer<'_>,
         event: &Event<'_>,
     ) -> std::fmt::Result {
-        // Inject the application tag before the regular formatting
         write!(writer, "application={} ", self.app)?;
-        // Delegate to the inner formatter for the rest
         self.inner.format_event(ctx, writer, event)
     }
 }
 
 pub fn init_tracing_logging(loki_server: &str, service_name: &str) {
-    // Respect RUST_LOG, default to info if not set
     let env_filter = EnvFilter::try_from_default_env()
         .or_else(|_| EnvFilter::try_new("info"))
         .unwrap();
 
-    // Build a compact default formatter and wrap it to inject the app tag
     let default_format = fmt::format().compact();
     let app_format = AppIdWrapper::new(default_format, service_name.to_string());
 
@@ -58,10 +54,19 @@ pub fn init_tracing_logging(loki_server: &str, service_name: &str) {
         .fmt_fields(DefaultFields::new())
         .event_format(app_format);
 
+    let otel_layer = {
+        if let Some(tracer) = crate::tempo_tracing::get_sdk_tracer() {
+            Some(tracing_opentelemetry::layer().with_tracer(tracer))
+        } else {
+            None
+        }
+    };
+
     tracing_subscriber::registry()
         .with(env_filter)
         .with(loki_layer)
         .with(fmt_layer)
+        .with(otel_layer)
         .init();
 
     tokio::spawn(task);

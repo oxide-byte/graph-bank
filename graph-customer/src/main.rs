@@ -12,13 +12,16 @@ use tools_server::observability::{http_metrics_middleware, setup_observability};
 use tools_server::routes::default_routes;
 use tools_server::trace_span_layer::TraceSpanLayer;
 use tools_server::tracing::init_tracing_logging;
+use tools_server::tempo_tracing::init_otel_tracing;
 
 #[tokio::main]
 async fn main() {
     let service = "graph_customer";
     let settings = Settings::new().unwrap();
-    // Initialize structured logging for tracing (logs are NOT sent to Prometheus; they go to stdout)
+    let tempo_guard = init_otel_tracing("graph-customer", settings.tempo.url.as_str());
+
     init_tracing_logging(settings.loki.url.as_str(), "graph-customer");
+
     setup_observability(service);
 
     let app = Router::new()
@@ -40,4 +43,6 @@ async fn main() {
         .with_graceful_shutdown(graceful_shutdown())
         .await
         .unwrap();
+
+    tempo_guard.shutdown();
 }
