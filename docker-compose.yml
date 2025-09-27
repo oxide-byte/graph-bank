@@ -9,6 +9,9 @@ services:
       - RUST_OBSERVABILITY_VMS=1
       - RUST_LOG=info
       - RUN_MODE=docker
+    depends_on:
+      - tempo
+      - loki
     networks:
       - monitoring
 
@@ -22,6 +25,9 @@ services:
       - RUST_OBSERVABILITY_VMS=1
       - RUST_LOG=info
       - RUN_MODE=docker
+    depends_on:
+      - tempo
+      - loki
     networks:
       - monitoring
 
@@ -86,10 +92,26 @@ services:
     networks:
       - monitoring
 
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    restart: unless-stopped
+    ports:
+      - '3200:3200' # Tempo HTTP port
+      - '4317:4317' # OpenTelemetry gRPC receiver
+      - '4318:4318' # OpenTelemetry HTTP receiver
+      - '14268:14268' # Jaeger HTTP receiver
+    command: -config.file=/etc/tempo.yaml
+    volumes:
+      - ./docker-adds/tempo/tempo-config.yaml:/etc/tempo.yaml # Mount Tempo configuration
+    networks:
+      - monitoring
+
 volumes:
   prometheus_data: { }
   grafana_data: { }
   loki_data: { }
+  tempo-data: { }
 
 networks:
   monitoring:

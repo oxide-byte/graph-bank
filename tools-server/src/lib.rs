@@ -6,3 +6,4 @@ pub mod health;
 pub mod metrics;
 pub mod routes;
 pub mod trace_span_layer;
+pub mod tempo_tracing;

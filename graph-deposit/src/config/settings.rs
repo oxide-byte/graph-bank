@@ -11,9 +11,16 @@ pub struct Loki {
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
+pub struct Tempo {
+    pub url: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[allow(unused)]
 pub struct Settings {
     pub debug: bool,
     pub loki: Loki,
+    pub tempo: Tempo,
 }
 
 impl Settings {
